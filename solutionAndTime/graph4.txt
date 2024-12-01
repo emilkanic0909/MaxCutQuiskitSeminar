@@ -1,0 +1,2 @@
+['0101', '1010']
+workingtime: 0.00000 seconds
