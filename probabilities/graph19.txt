@@ -1,0 +1,3 @@
+by p = 1 is probability of correct solution = 0.00439453125 
+by p = 2 is probability of correct solution = 0.00927734375 
+by p = 3 is probability of correct solution = 0.00390625 

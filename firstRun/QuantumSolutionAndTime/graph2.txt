@@ -1,0 +1,112 @@
+with p = 1, shots = 2048, optimization time: 0.09071 second, total workingtime: 0.09284 seconds, with the biggest 100 probabilities:
+'01': 0.494140625 
+'10': 0.505859375 
+
+
+with p = 2, shots = 2048, optimization time: 0.19512 second, total workingtime: 0.19874 seconds, with the biggest 100 probabilities:
+'11': 0.00048828125 
+'01': 0.49658203125 
+'10': 0.5029296875 
+
+
+with p = 3, shots = 2048, optimization time: 0.26928 second, total workingtime: 0.27237 seconds, with the biggest 100 probabilities:
+'00': 0.00048828125 
+'01': 0.48388671875 
+'10': 0.515625 
+
+
+with p = 4, shots = 2048, optimization time: 0.28079 second, total workingtime: 0.28446 seconds, with the biggest 100 probabilities:
+'00': 0.00048828125 
+'01': 0.49853515625 
+'10': 0.5009765625 
+
+
+with p = 5, shots = 2048, optimization time: 0.53080 second, total workingtime: 0.53444 seconds, with the biggest 100 probabilities:
+'01': 0.4951171875 
+'10': 0.5048828125 
+
+
+with p = 6, shots = 2048, optimization time: 0.63606 second, total workingtime: 0.64022 seconds, with the biggest 100 probabilities:
+'11': 0.00048828125 
+'00': 0.00146484375 
+'01': 0.49072265625 
+'10': 0.50732421875 
+
+
+with p = 7, shots = 2048, optimization time: 1.06199 second, total workingtime: 1.06922 seconds, with the biggest 100 probabilities:
+'00': 0.00048828125 
+'10': 0.4970703125 
+'01': 0.50244140625 
+
+
+with p = 8, shots = 2048, optimization time: 1.20428 second, total workingtime: 1.21596 seconds, with the biggest 100 probabilities:
+'00': 0.00048828125 
+'11': 0.00048828125 
+'10': 0.49609375 
+'01': 0.5029296875 
+
+
+with p = 9, shots = 2048, optimization time: 1.49930 second, total workingtime: 1.50769 seconds, with the biggest 100 probabilities:
+'00': 0.00048828125 
+'10': 0.4990234375 
+'01': 0.50048828125 
+
+
+with p = 10, shots = 2048, optimization time: 1.57007 second, total workingtime: 1.58216 seconds, with the biggest 100 probabilities:
+'01': 0.48876953125 
+'10': 0.51123046875 
+
+
+with p = 11, shots = 2048, optimization time: 1.99548 second, total workingtime: 2.00585 seconds, with the biggest 100 probabilities:
+'00': 0.00048828125 
+'11': 0.00048828125 
+'01': 0.47998046875 
+'10': 0.51904296875 
+
+
+with p = 12, shots = 2048, optimization time: 2.07989 second, total workingtime: 2.08882 seconds, with the biggest 100 probabilities:
+'00': 0.00048828125 
+'11': 0.0009765625 
+'01': 0.48193359375 
+'10': 0.5166015625 
+
+
+with p = 13, shots = 2048, optimization time: 2.51143 second, total workingtime: 2.52227 seconds, with the biggest 100 probabilities:
+'01': 0.49853515625 
+'10': 0.50146484375 
+
+
+with p = 14, shots = 2048, optimization time: 2.43476 second, total workingtime: 2.44512 seconds, with the biggest 100 probabilities:
+'10': 0.494140625 
+'01': 0.505859375 
+
+
+with p = 15, shots = 2048, optimization time: 2.75415 second, total workingtime: 2.76795 seconds, with the biggest 100 probabilities:
+'10': 0.48095703125 
+'01': 0.51904296875 
+
+
+with p = 16, shots = 2048, optimization time: 3.48623 second, total workingtime: 3.49933 seconds, with the biggest 100 probabilities:
+'11': 0.00048828125 
+'10': 0.498046875 
+'01': 0.50146484375 
+
+
+with p = 17, shots = 2048, optimization time: 4.00551 second, total workingtime: 4.01901 seconds, with the biggest 100 probabilities:
+'01': 0.48291015625 
+'10': 0.51708984375 
+
+
+with p = 18, shots = 2048, optimization time: 4.45265 second, total workingtime: 4.46598 seconds, with the biggest 100 probabilities:
+'00': 0.00048828125 
+'11': 0.0009765625 
+'10': 0.4951171875 
+'01': 0.50341796875 
+
+
+with p = 19, shots = 2048, optimization time: 4.62329 second, total workingtime: 4.64047 seconds, with the biggest 100 probabilities:
+'11': 0.00048828125 
+'01': 0.48486328125 
+'10': 0.5146484375 
+
+

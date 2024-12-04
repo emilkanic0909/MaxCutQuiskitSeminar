@@ -154,6 +154,7 @@ def obtain_graphs(start = 2, end = 20):
     return graphs[(start - 2):end + 1]
 
 def get_qaoa_circuit(G, beta, gamma):
+    N = G.number_of_nodes()
     qc = QuantumCircuit(N,N)
     qc.h(range(N))
     for i in range(len(beta)):
@@ -165,6 +166,7 @@ def get_qaoa_circuit(G, beta, gamma):
 
 #cost operator should give more hardness to schema if it more close to solution. Level of hardness is depends on GAMMA parameter
 def get_cost(G, gamma):
+    N = G.number_of_nodes()
     qc = QuantumCircuit(N,N)
     for q1,q2 in G.edges():
         qc.cx(q1, q2)
@@ -174,6 +176,7 @@ def get_cost(G, gamma):
 
 #mixed operator should make more randomnes to get other scheme if solution is far. Level of mixing represented through BETA parameter
 def get_mixer(G, beta):
+    N = G.number_of_nodes()
     qc = QuantumCircuit(N,N)
     for q1 in G.nodes():
         qc.rx(2 * beta, q1)
@@ -225,6 +228,8 @@ def classical_MaxCutSolver(G):
             currentMaxString.clear()
             currentMaxString.append(bin(i)[2:].zfill(numberOfNodes))
     return currentMaxString
+
+
 def solve_and_draw_graph(G, Solve = True):
     #pos = nx.spring_layout(G, seed=42, k=0.5)
     pos = nx.kamada_kawai_layout(G)
@@ -248,19 +253,81 @@ def solve_and_draw_graph(G, Solve = True):
         print(f"solved and drawed graph{G.number_of_nodes()}")
     return
 
+def quantum_solve_and_print(G, p, params, shots = 1024):
+    start_time = time.time()
+
+    optimization_start_time = time.time()
+    func = get_objective_function(G, p, shots)
+    res_sample = minimize(func, params, method='COBYLA',options={'maxiter': 4000, 'disp': False})
+    optimization_end_time = time.time()
+    sampler = Sampler(options={'shots': shots})
+    optimal_theta = res_sample['x']
+    binary_probabilities = invert_counts(
+        sampler.run(get_qaoa_circuit(G, optimal_theta[:p], optimal_theta[p:])).result().quasi_dists[
+            0].binary_probabilities())
+
+    end_time = time.time()
+    with open(f"QuantumSolutionAndTime/graph{G.number_of_nodes()}.txt", "a", encoding="utf-8") as file:
+        file.write(f"with p = {p}, shots = {shots}, optimization time: {optimization_end_time - optimization_start_time:.5f} second, total workingtime: {end_time - start_time:.5f} seconds, with the biggest 100 probabilities:\n")
+        for key, value in sorted(binary_probabilities.items(), key=lambda item: item[1])[-100:]:
+            file.write(f"'{key}': {value} \n")
+        file.write("\n\n")
+    print(f"solved and drawed graph{G.number_of_nodes()} with p = {p}")
+    return res_sample
+#To solve all graphs with classical solver
 #graphArray = obtain_graphs(2,20)
 #for graph in graphArray:
  #   solve_and_draw_graph(graph, True)
 
-G = obtain_graphs(5,5)[0]
-shots = 128
-N = G.number_of_nodes()
-p = 4
-func = get_objective_function(G, p, shots)
-res_sample = minimize(func, np.array(np.random.rand(2*p)), method='COBYLA', options={'maxiter':4000, 'disp':False})
-sampler = Sampler(options={'shots': shots})
-optimal_theta = res_sample['x']
-binary_probabilities = invert_counts(sampler.run(get_qaoa_circuit(G, optimal_theta[:p], optimal_theta[p:])).result().quasi_dists[0].binary_probabilities())
+#to solve each graph with incrementing p
+graphNumber = 2   #from which graph to start
+graphs = obtain_graphs(2,19)   #get graphs
+shots = 2048   #number of shots
+p = 1  #optimization number
+init_params = np.random.rand(2 * p)
+G = graphs[graphNumber - 2]
+time_to_cut = time.time()
+while True:
+    if (p == 20) or (time.time() - time_to_cut > 900):
+        p = 1
+        init_params = np.random.rand(2 * p)
+        graphNumber += 1
+        G = graphs[graphNumber - 2]
+        time_to_cut = time.time()
+    if (graphNumber == 19 and p >= 4):
+        break
+    result = quantum_solve_and_print(G, p,init_params, shots)
+    p+=1
+    init_params = np.concatenate([result.x, np.random.rand(1), np.random.rand(1)])
 
-for key, value in sorted(binary_probabilities.items(), key=lambda item: item[1]):
-    print(f"'{key}': {value}")
+#calculate possiibilities
+for i in range(2,20):
+    with open(f"solutionAndTime/graph{i}.txt", 'r') as file:
+        lines = file.readlines()
+        binary_strings = []
+        for line in lines:
+            line = line.strip().strip("[]").replace("'", "").split(',')
+            for element in line:
+                element = element.strip()
+                if all(char in '01' for char in element):
+                    binary_strings.append(element)
+    print(binary_strings)
+    with open(f"QuantumSolutionAndTime/graph{i}.txt", 'r') as file2:
+        content = file2.read()
+        blocks = content.strip().split('\n\n\n')
+        for block in blocks:
+            probability = 0.0
+            lines = block.split('\n')
+            if 'p =' in lines[0]:
+                p_value = int(lines[0].split('p =')[1].split(',')[0].strip())
+            probabilities = {}
+            for line in lines:
+                if ":" in line and "'" in line:
+                    key, value = line.strip().replace("'", "").split(':')
+                    probabilities[key.strip()] = float(value.strip())
+            for string in binary_strings:
+                if string in probabilities:
+                    probability += probabilities[string]
+
+            with open(f'probabilities/graph{i}.txt', "a") as write_file:
+                write_file.write(f"by p = {p_value} is probability of correct solution = {probability} \n");

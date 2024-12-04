@@ -1,0 +1,11 @@
+by p = 1 is probability of correct solution = 0.01806640625 
+by p = 2 is probability of correct solution = 0.0498046875 
+by p = 3 is probability of correct solution = 0.03857421875 
+by p = 4 is probability of correct solution = 0.12353515625 
+by p = 5 is probability of correct solution = 0.1064453125 
+by p = 6 is probability of correct solution = 0.0673828125 
+by p = 7 is probability of correct solution = 0.03076171875 
+by p = 8 is probability of correct solution = 0.14404296875 
+by p = 9 is probability of correct solution = 0.0634765625 
+by p = 10 is probability of correct solution = 0.09130859375 
+by p = 11 is probability of correct solution = 0.05078125 
