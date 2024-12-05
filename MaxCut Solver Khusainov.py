@@ -274,34 +274,48 @@ def quantum_solve_and_print(G, p, params, shots = 1024):
         file.write("\n\n")
     print(f"solved and drawed graph{G.number_of_nodes()} with p = {p}")
     return res_sample
+
+def get_probability_for_firstRun(filePath):
+    probabilities = []
+    with open(filePath, 'r') as file:
+        lines = file.readlines()
+        for line in lines:
+            if "by p =" in line and "is probability of correct solution =" in line:
+                parts = line.split("is probability of correct solution =")
+                probability = float(parts[1].strip())
+                probabilities.append(probability)
+    return probabilities
 #To solve all graphs with classical solver
 #graphArray = obtain_graphs(2,20)
 #for graph in graphArray:
  #   solve_and_draw_graph(graph, True)
 
 #to solve each graph with incrementing p
-graphNumber = 2   #from which graph to start
-graphs = obtain_graphs(2,19)   #get graphs
-shots = 2048   #number of shots
-p = 1  #optimization number
-init_params = np.random.rand(2 * p)
-G = graphs[graphNumber - 2]
-time_to_cut = time.time()
-while True:
-    if (p == 20) or (time.time() - time_to_cut > 900):
-        p = 1
-        init_params = np.random.rand(2 * p)
-        graphNumber += 1
-        G = graphs[graphNumber - 2]
-        time_to_cut = time.time()
-    if (graphNumber == 19 and p >= 4):
-        break
-    result = quantum_solve_and_print(G, p,init_params, shots)
-    p+=1
-    init_params = np.concatenate([result.x, np.random.rand(1), np.random.rand(1)])
+#graphNumber = 2   #from which graph to start
+#graphs = obtain_graphs(2,19)   #get graphs
+#shots = 2048   #number of shots
+#p = 1  #optimization number
+#init_params = np.random.rand(2 * p)
+#G = graphs[graphNumber - 2]
+#time_to_cut = time.time()
+#while True:
+#    if (p == 20) or (time.time() - time_to_cut > 900):
+#        p = 1
+#        init_params = np.random.rand(2 * p)
+#        graphNumber += 1
+#        G = graphs[graphNumber - 2]
+#        time_to_cut = time.time()
+#    if (graphNumber == 19 and p >= 4):
+#        break
+#    result = quantum_solve_and_print(G, p,init_params, shots)
+#    p+=1
+#    init_params = np.concatenate([result.x, np.random.rand(1), np.random.rand(1)])
 
-#calculate possiibilities
+#calculate possiibilities and maybe draw
 for i in range(2,20):
+    xDots = []
+    yDots = []
+    yDotsFirstRun = get_probability_for_firstRun(f"firstRun/probabilities/graph{i}.txt")
     with open(f"solutionAndTime/graph{i}.txt", 'r') as file:
         lines = file.readlines()
         binary_strings = []
@@ -330,4 +344,13 @@ for i in range(2,20):
                     probability += probabilities[string]
 
             with open(f'probabilities/graph{i}.txt', "a") as write_file:
-                write_file.write(f"by p = {p_value} is probability of correct solution = {probability} \n");
+                #write_file.write(f"by p = {p_value} is probability of correct solution = {probability} \n");
+
+                xDots.append(p_value)
+                yDots.append(probability)
+        plt.clf()
+        plt.plot( xDots, yDots, color='blue')
+        plt.plot(xDots, yDotsFirstRun, color='red')
+        plt.ylim(0, 1.1000)
+        plt.savefig(f"comparingGraphFirstAndSecondRun/graph{i}.png")
+        plt.clf()
