@@ -286,32 +286,32 @@ def get_probability_for_firstRun(filePath):
                 probabilities.append(probability)
     return probabilities
 #To solve all graphs with classical solver
-#graphArray = obtain_graphs(2,20)
-#for graph in graphArray:
- #   solve_and_draw_graph(graph, True)
+graphArray = obtain_graphs(2,19)
+for graph in graphArray:
+    solve_and_draw_graph(graph, True)
 
 #to solve each graph with incrementing p
-#graphNumber = 2   #from which graph to start
-#graphs = obtain_graphs(2,19)   #get graphs
-#shots = 2048   #number of shots
-#p = 1  #optimization number
-#init_params = np.random.rand(2 * p)
-#G = graphs[graphNumber - 2]
-#time_to_cut = time.time()
-#while True:
-#    if (p == 20) or (time.time() - time_to_cut > 900):
-#        p = 1
-#        init_params = np.random.rand(2 * p)
-#        graphNumber += 1
-#        G = graphs[graphNumber - 2]
-#        time_to_cut = time.time()
-#    if (graphNumber == 19 and p >= 4):
-#        break
-#    result = quantum_solve_and_print(G, p,init_params, shots)
-#    p+=1
-#    init_params = np.concatenate([result.x, np.random.rand(1), np.random.rand(1)])
+graphNumber = 2   #from which graph to start
+graphs = obtain_graphs(2,19)   #get graphs
+shots = 2048   #number of shots
+p = 1  #optimization number
+init_params = np.random.rand(2 * p)
+G = graphs[graphNumber - 2]
+time_to_cut = time.time()
+while True:
+    if (p == 20) or (time.time() - time_to_cut > 900):
+        p = 1
+        init_params = np.random.rand(2 * p)
+        graphNumber += 1
+        G = graphs[graphNumber - 2]
+        time_to_cut = time.time()
+    if (graphNumber == 19 and p >= 4):
+        break
+    result = quantum_solve_and_print(G, p,init_params, shots)
+    p+=1
+    init_params = np.concatenate([result.x, np.random.rand(1), np.random.rand(1)])
 
-#calculate possiibilities and maybe draw
+#calculate possiibilities and draw
 for i in range(2,20):
     xDots = []
     yDots = []
@@ -325,7 +325,7 @@ for i in range(2,20):
                 element = element.strip()
                 if all(char in '01' for char in element):
                     binary_strings.append(element)
-    print(binary_strings)
+    #print(binary_strings)
     with open(f"QuantumSolutionAndTime/graph{i}.txt", 'r') as file2:
         content = file2.read()
         blocks = content.strip().split('\n\n\n')
@@ -344,8 +344,7 @@ for i in range(2,20):
                     probability += probabilities[string]
 
             with open(f'probabilities/graph{i}.txt', "a") as write_file:
-                #write_file.write(f"by p = {p_value} is probability of correct solution = {probability} \n");
-
+                write_file.write(f"by p = {p_value} is probability of correct solution = {probability} \n");
                 xDots.append(p_value)
                 yDots.append(probability)
         plt.clf()
